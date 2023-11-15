@@ -19,4 +19,7 @@ const UserSchema = new Schema({
         default: Date.now
     },
 });
-export default model('user', UserSchema);
+
+const User =  model('user', UserSchema);
+User.createIndexes();
+export default User;
