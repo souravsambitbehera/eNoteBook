@@ -1,6 +1,7 @@
 import express from "express"
 import User from "../models/User.js"
 const router = express.Router() //importing express router
+import bcrypt from "bcryptjs"
 
 router.post("/signup", async(req,res)=>{ //it will render on specific routes
   const {name,email,password}= req.body //data coming from frontend // and i'm destructure thr req.body 
@@ -21,10 +22,13 @@ router.post("/signup", async(req,res)=>{ //it will render on specific routes
     }
 
     //save data into db
+
+    const salt = await bcrypt.genSalt(10) //generate salt
+    const hashPassword = await bcrypt.hash(password,salt) //generate hsah password
     const newUser = await User({
         name,
         email,
-        password,
+        password:hashPassword
     })
     await newUser.save()
     console.log(newUser)
